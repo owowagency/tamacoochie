@@ -76,6 +76,7 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 			data[i] = binary; // R
 			data[i + 1] = binary; // G
 			data[i + 2] = binary; // B
+			data[i + 3] = 255; // The board is not transparent :-)
 		}
 		ctx.putImageData(imageData, 0, 0);
 	}
