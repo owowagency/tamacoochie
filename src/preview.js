@@ -7,7 +7,7 @@ http
 			res.writeHead(200, { "Content-Type": "text/html" });
 			res.end(`
       <html><body style="margin:0;background:#fff;display:flex;justify-content:center;align-items:center">
-        <img id="frame" src="/frame.png" style="max-width:100%;max-height:100vh">
+        <img id="frame" src="/frame.png" style="image-rendering:pixelated;">
         <script>
           function updateFrame(time) {
             document.getElementById('frame').src = '/frame.png?t=' + time;
