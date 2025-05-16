@@ -1,5 +1,5 @@
 import { Ticker } from "./ticker.js";
-import { createCanvas } from "canvas";
+import { createCanvas, registerFont } from "canvas";
 import fs from "node:fs";
 import path from "node:path";
 import { RESOLUTION, FPS } from "./settings.js";
@@ -10,6 +10,21 @@ const outputDir = "./output";
 if (!fs.existsSync(outputDir)) {
 	fs.mkdirSync(outputDir, { recursive: true });
 }
+
+// Register fonts
+registerFont(
+  path.resolve(import.meta.dirname, '../fonts/OpenSans-Variable.ttf'),
+  { family: 'OpenSans' },
+);
+registerFont(
+  path.resolve(import.meta.dirname, '../fonts/PPNeueMontrealMono-Regular.ttf'),
+  { family: 'PPNeueMontreal' },
+);
+registerFont(
+  path.resolve(import.meta.dirname, '../fonts/Px437_ACM_VGA.ttf'),
+  { family: 'Px437_ACM_VGA' },
+);
+
 
 // Create canvas with the specified resolution
 const canvas = createCanvas(RESOLUTION[0], RESOLUTION[1]);
@@ -31,9 +46,9 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 	console.time("Write frame");
 
 	// Log approximately once per second
-	// if (elapsedTime % 1000 < 20) {
-	// 	console.log(`Delta: ${deltaTime}`);
-	// }
+	if (elapsedTime % 1000 < 20) {
+		console.log(`Delta: ${deltaTime}`);
+	}
 
 	const [width, height] = RESOLUTION;
 	console.log(`Rendering a ${width}x${height} canvas`);
@@ -46,17 +61,36 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 	ctx.fillRect(0, 0, width, height);
 
 	// Draw the elapsed time in seconds (rounded to 2 decimal places)
-	ctx.fillStyle = "#fff";
-	ctx.fillText((elapsedTime / 1000).toFixed(2), 0, 0);
+	{
+		const text = (elapsedTime / 1000).toFixed(2);
+
+		ctx.fillStyle = "#fff";
+		ctx.font = '14px "Px437_ACM_VGA"';
+
+		const {actualBoundingBoxLeft, actualBoundingBoxAscent} = ctx.measureText(text);
+		ctx.fillText(text, actualBoundingBoxLeft, actualBoundingBoxAscent + 1);
+	}
+
+	// Draw the OWOW logo
+	{
+		const text = 'OWOW';
+
+		ctx.fillStyle = "#fff";
+		ctx.font = '12px "OpenSans" bold';
+
+		const {actualBoundingBoxAscent, actualBoundingBoxRight} = ctx.measureText(text);
+		ctx.fillText(text, width - actualBoundingBoxRight, actualBoundingBoxAscent + 1);
+	}
 
 	// Example: Draw a moving white dot
 	{
+		const w = width - 9
 		// Time based sine wave
 		const sine = Math.sin(elapsedTime / 1000);
-		const size = 5; // 5x5 pixels
+		const size = 8; // 5x5 pixels
 		// Map sine wave to x-axis
-		const x = Math.floor(((sine + 1) / 2) * width) - size / 2;
-		const y = height - size;
+		const x = Math.floor(((sine + 1) / 2) * w) - size / 2 + 5;
+		const y = height - size - 1;
 		ctx.fillStyle = "#fff";
 
 		// Draw the dot (a filled circle)
