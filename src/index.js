@@ -2,8 +2,15 @@ import { Ticker } from "./ticker.js";
 import { createCanvas, registerFont } from "canvas";
 import fs from "node:fs";
 import path from "node:path";
-import { RESOLUTION, FPS } from "./settings.js";
+import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
+import { createDisplay } from 'flipdisc';
 import "./preview.js";
+
+const IS_DEV = process.argv.includes('--dev');
+
+// Create display
+const display = createDisplay(LAYOUT, DEVICES, OPTIONS);
+const { width, height } = display;
 
 // Create output directory if it doesn't exist
 const outputDir = "./output";
@@ -27,7 +34,7 @@ registerFont(
 
 
 // Create canvas with the specified resolution
-const canvas = createCanvas(RESOLUTION[0], RESOLUTION[1]);
+const canvas = createCanvas(width, height);
 const ctx = canvas.getContext("2d");
 
 // Disable anti-aliasing and image smoothing
@@ -50,7 +57,6 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 		console.log(`Delta: ${deltaTime}`);
 	}
 
-	const [width, height] = RESOLUTION;
 	console.log(`Rendering a ${width}x${height} canvas`);
 	console.log("View at http://localhost:3000/view");
 
@@ -115,9 +121,15 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 		ctx.putImageData(imageData, 0, 0);
 	}
 
-	// Save the canvas as a PNG file
-	const filename = path.join(outputDir, "frame.png");
-	const buffer = canvas.toBuffer("image/png");
-	fs.writeFileSync(filename, buffer);
+	if (IS_DEV) {
+		// Save the canvas as a PNG file
+		const filename = path.join(outputDir, "frame.png");
+		const buffer = canvas.toBuffer("image/png");
+		fs.writeFileSync(filename, buffer);
+	} else {
+      const { data } = ctx.getImageData(0, 0, display.width, display.height);
+      display.send([...data.values()]);
+	}
+
 	console.timeEnd("Write frame");
 });
