@@ -3,10 +3,10 @@ import { createCanvas, registerFont } from "canvas";
 import fs from "node:fs";
 import path from "node:path";
 import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
-import { createDisplay } from 'flipdisc';
+import { createDisplay } from "flipdisc";
 import "./preview.js";
 
-const IS_DEV = process.argv.includes('--dev');
+const IS_DEV = process.argv.includes("--dev");
 
 // Create display
 const display = createDisplay(LAYOUT, DEVICES, OPTIONS);
@@ -20,18 +20,16 @@ if (!fs.existsSync(outputDir)) {
 
 // Register fonts
 registerFont(
-  path.resolve(import.meta.dirname, '../fonts/OpenSans-Variable.ttf'),
-  { family: 'OpenSans' },
+	path.resolve(import.meta.dirname, "../fonts/OpenSans-Variable.ttf"),
+	{ family: "OpenSans" },
 );
 registerFont(
-  path.resolve(import.meta.dirname, '../fonts/PPNeueMontrealMono-Regular.ttf'),
-  { family: 'PPNeueMontreal' },
+	path.resolve(import.meta.dirname, "../fonts/PPNeueMontrealMono-Regular.ttf"),
+	{ family: "PPNeueMontreal" },
 );
-registerFont(
-  path.resolve(import.meta.dirname, '../fonts/Px437_ACM_VGA.ttf'),
-  { family: 'Px437_ACM_VGA' },
-);
-
+registerFont(path.resolve(import.meta.dirname, "../fonts/Px437_ACM_VGA.ttf"), {
+	family: "Px437_ACM_VGA",
+});
 
 // Create canvas with the specified resolution
 const canvas = createCanvas(width, height);
@@ -51,12 +49,6 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 	// Clear the console
 	console.clear();
 	console.time("Write frame");
-
-	// Log approximately once per second
-	if (elapsedTime % 1000 < 20) {
-		console.log(`Delta: ${deltaTime}`);
-	}
-
 	console.log(`Rendering a ${width}x${height} canvas`);
 	console.log("View at http://localhost:3000/view");
 
@@ -73,24 +65,30 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 		ctx.fillStyle = "#fff";
 		ctx.font = '14px "Px437_ACM_VGA"';
 
-		const {actualBoundingBoxLeft, actualBoundingBoxAscent} = ctx.measureText(text);
+		const { actualBoundingBoxLeft, actualBoundingBoxAscent } =
+			ctx.measureText(text);
 		ctx.fillText(text, actualBoundingBoxLeft, actualBoundingBoxAscent + 1);
 	}
 
 	// Draw the OWOW logo
 	{
-		const text = 'OWOW';
+		const text = "OWOW";
 
 		ctx.fillStyle = "#fff";
 		ctx.font = '12px "OpenSans" bold';
 
-		const {actualBoundingBoxAscent, actualBoundingBoxRight} = ctx.measureText(text);
-		ctx.fillText(text, width - actualBoundingBoxRight, actualBoundingBoxAscent + 1);
+		const { actualBoundingBoxAscent, actualBoundingBoxRight } =
+			ctx.measureText(text);
+		ctx.fillText(
+			text,
+			width - actualBoundingBoxRight,
+			actualBoundingBoxAscent + 1,
+		);
 	}
 
 	// Example: Draw a moving white dot
 	{
-		const w = width - 9
+		const w = width - 9;
 		// Time based sine wave
 		const sine = Math.sin(elapsedTime / 1000);
 		const size = 8; // 5x5 pixels
@@ -127,9 +125,11 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 		const buffer = canvas.toBuffer("image/png");
 		fs.writeFileSync(filename, buffer);
 	} else {
-      const { data } = ctx.getImageData(0, 0, display.width, display.height);
-      display.send([...data.values()]);
+		const { data } = ctx.getImageData(0, 0, display.width, display.height);
+		display.send([...data.values()]);
 	}
 
+	console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
+	console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
 	console.timeEnd("Write frame");
 });
