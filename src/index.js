@@ -12,7 +12,7 @@ let tamacoochieStatus = {
   foodLevel: null,
   sleepLevel: null,
   playLevel: null,
-  currentScene: null,
+  currentScene: "default",
   currentPlayer: null,
   creationTime: null,
   isDead: null,
@@ -92,7 +92,7 @@ ticker.start(({ deltaTime, elapsedTime }) => {
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, width, height);
 
-  drawTama(tamacoochie, elapsedTime, ctx, width, height);
+  drawTama(tamacoochieStatus, elapsedTime, ctx, width, height);
 
   if (IS_DEV) {
     // Save the canvas as a PNG file

@@ -31,6 +31,6 @@ app.get("/status", (req, res) => {
 
 app.use(express.json());
 
-app.listen(80, () => {
-  console.log(`Server listening on port 80`);
+app.listen(8080, () => {
+  console.log(`Server listening on port 8080`);
 });
