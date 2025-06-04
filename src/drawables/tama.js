@@ -2,8 +2,21 @@ import { Tamacoochie } from "../game.js";
 import { loadImage, CanvasRenderingContext2D } from 'canvas';
 import {resolve} from 'node:path';
 
-const tama = await loadImage(resolve(import.meta.dirname, '../../assets/tama.png'));
-const tamaSleep = await loadImage(resolve(import.meta.dirname, '../../assets/tama_sleep.png'));
+const tamaDefault = await Promise.all([
+  loadImage(resolve(import.meta.dirname, '../../assets/default/1.png')),
+  loadImage(resolve(import.meta.dirname, '../../assets/default/2.png')),
+]);
+
+const tamaPlay = await Promise.all([
+  loadImage(resolve(import.meta.dirname, '../../assets/play/1.png')),
+  loadImage(resolve(import.meta.dirname, '../../assets/play/2.png')),
+]);
+
+const tamaDead = await Promise.all([
+  loadImage(resolve(import.meta.dirname, '../../assets/dead/1.png')),
+]);
+
+const TamaSize = 24;
 
 /**
  * idk
@@ -14,37 +27,48 @@ const tamaSleep = await loadImage(resolve(import.meta.dirname, '../../assets/tam
  * @param {number} canvasHeight
  */
 export function drawTama(coochie, elapsedTime, ctx, canvasWidth, canvasHeight) {
+  drawDead(elapsedTime, ctx, canvasWidth, canvasHeight);
+  return;
+
   switch(coochie.currentScene) {
-    case 'sleep':
-      drawAsleep(elapsedTime, ctx, canvasWidth, canvasHeight);
+    case 'playing':
+      drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight);
+      break;
+    case 'dead':
+      drawDead(elapsedTime, ctx, canvasWidth, canvasHeight);
       break;
     default:
-      drawNormal(ctx, canvasWidth, canvasHeight);
+      drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight);
       break;
   }
 }
 
-function drawNormal(ctx, canvasWidth, canvasHeight) {
-  const x = canvasWidth / 2 - tama.width / 2;
-  const y = canvasHeight / 2 - tama.height / 2 + 2;
+function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight) {
+  const x = 4;
+  const y = canvasHeight / 2 - TamaSize / 2;
 
-  ctx.drawImage(tama, x, y);
+  const frame = Math.floor(elapsedTime / 500) % tamaDefault.length;
+  const sprite = tamaDefault[frame];
+
+  ctx.drawImage(sprite, x, y);
 }
 
-function drawAsleep(elapsedTime, ctx, canvasWidth, canvasHeight) {
-  const x = canvasWidth / 2 - tama.width / 2;
-  const y = canvasHeight / 2 - tama.height / 2 + 2;
+function drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight) {
+  const x = 4;
+  const y = canvasHeight / 2 - TamaSize / 2;
 
-  ctx.drawImage(tamaSleep, x, y);
+  const frame = Math.floor(elapsedTime / 500) % tamaPlay.length;
+  const sprite = tamaPlay[frame];
 
-  const t = Math.round(elapsedTime / 400) % 5;
-  const z1 = t >= 0 && t <= 1 ? 'Z' : '';
-  const z2 = t >= 2 && t <= 3 ? 'Z' : '';
-  const zXBase = x + tama.width;
-  const zYBase = y;
+  ctx.drawImage(sprite, x, y);
+}
 
-  ctx.fillStyle = "#fff";
-  ctx.font = '5px "Pixel"';
-  ctx.fillText(z1, zXBase - 1, zYBase);
-  ctx.fillText(z2, zXBase + 1, zYBase - 4);
+function drawDead(elapsedTime, ctx, canvasWidth, canvasHeight) {
+  const x = 4;
+  const y = canvasHeight / 2 - TamaSize / 2;
+
+  const frame = 0;
+  const sprite = tamaDead[frame];
+
+  ctx.drawImage(sprite, x, y);
 }
