@@ -80,7 +80,3 @@ export class Tamacoochie {
     } else return false;
   }
 }
-
-export const tamacoochie = new Tamacoochie();
-
-tamacoochie.start();

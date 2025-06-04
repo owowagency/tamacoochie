@@ -5,6 +5,8 @@ import path from "node:path";
 import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
 import { createDisplay } from "flipdisc";
 import "./preview.js";
+import app from "./server.js";
+import { Tamacoochie } from "./game.js";
 
 const IS_DEV = process.argv.includes("--dev");
 
@@ -47,10 +49,10 @@ const ticker = new Ticker({ fps: FPS });
 
 ticker.start(({ deltaTime, elapsedTime }) => {
 	// Clear the console
-	console.clear();
-	console.time("Write frame");
-	console.log(`Rendering a ${width}x${height} canvas`);
-	console.log("View at http://localhost:3000/view");
+	// console.clear();
+	// console.time("Write frame");
+	// console.log(`Rendering a ${width}x${height} canvas`);
+	// console.log("View at http://localhost:3000/view");
 
 	ctx.clearRect(0, 0, width, height);
 
@@ -129,7 +131,15 @@ ticker.start(({ deltaTime, elapsedTime }) => {
 		display.send([...data.values()]);
 	}
 
-	console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
-	console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
-	console.timeEnd("Write frame");
+	// console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
+	// console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
+	// console.timeEnd("Write frame");
+});
+
+app.listen(3000, () => {
+	console.log("Server started on port 3000");
+	
+	const tamacoochie = new Tamacoochie();
+  tamacoochie.start();
+
 });
