@@ -3,7 +3,7 @@ import relativeDate from "./utils/relativeDate.js";
 const config = {
   hungerDrainRate: 0,
   sleepDrainRate: 0,
-  playDrainRate: 3,
+  playDrainRate: 2,
   feedAmount: 1,
   sleepAmount: 1,
   playAmount: 8,
@@ -11,7 +11,7 @@ const config = {
   defaultSleepLevel: 24,
   defaultPlayLevel: 24,
   sceneTimeOut: 10 * 1000, // 10 seconds
-  speed: 1000 * 30, // 1 tick per minute
+  speed: 1000 * 10, // 1 tick per minute
   // speed: 3600 * 24 * 1000, // 1 tick per hour in ms
   debugSpeed: 1000, // 1 tick per second
 };
