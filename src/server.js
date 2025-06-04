@@ -17,6 +17,9 @@ app.post("/webhook/slack", (req, res) => {
     case "play":
       tamacoochie.play(username);
       break;
+    case "revive":
+      tamacoochie.reset();
+      break;
     default:
       // Handle unknown command
       break;

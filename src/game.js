@@ -73,6 +73,14 @@ export class Tamacoochie {
     }, config.sceneTimeOut);
   }
 
+  reset() {
+    this.foodLevel = config.foodStart;
+    this.sleepLevel = config.sleepStart;
+    this.playLevel = config.playStart;
+    this.currentScene = "default";
+    this.currentPlayer = null;
+  }
+
   tick() {
     // Disabling for now
     // this.hungerDrain();
