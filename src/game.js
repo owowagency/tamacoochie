@@ -53,6 +53,9 @@ export class Tamacoochie {
     this.foodLevel += config.feedAmount;
     this.currentPlayer = playerName;
     this.currentScene = "feeding";
+    if (this.sceneTimer) {
+      clearTimeout(this.sceneTimer);
+    }
     this.sceneTimer = setTimeout(() => {
       this.currentScene = "default";
       this.currentPlayer = null;
@@ -66,6 +69,9 @@ export class Tamacoochie {
     this.sleepLevel += config.sleepAmount;
     this.currentPlayer = playerName;
     this.currentScene = "sleeping";
+    if (this.sceneTimer) {
+      clearTimeout(this.sceneTimer);
+    }
     this.sceneTimer = setTimeout(() => {
       this.currentScene = "default";
       this.currentPlayer = null;
@@ -79,6 +85,9 @@ export class Tamacoochie {
     this.playLevel += config.playAmount;
     this.currentPlayer = playerName;
     this.currentScene = "playing";
+    if (this.sceneTimer) {
+      clearTimeout(this.sceneTimer);
+    }
     this.sceneTimer = setTimeout(() => {
       this.currentScene = "default";
       this.currentPlayer = null;
