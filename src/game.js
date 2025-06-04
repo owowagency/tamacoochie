@@ -95,11 +95,14 @@ export class Tamacoochie {
   }
 
   reset() {
-    this.foodLevel = config.foodStart;
-    this.sleepLevel = config.sleepStart;
-    this.playLevel = config.playStart;
+    this.foodLevel = config.defaultFoodLevel;
+    this.sleepLevel = config.defaultSleepLevel;
+    this.playLevel = config.defaultPlayLevel;
+    this.isDead = false;
+    this.creationTime = new Date();
     this.currentScene = "default";
     this.currentPlayer = null;
+    this.sceneTimer = null;
   }
 
   tick() {
