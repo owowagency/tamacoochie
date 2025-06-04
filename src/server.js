@@ -6,7 +6,8 @@ tamacoochie.start();
 
 const app = express();
 
-app.use(express.json());
+// url encoded
+app.use(express.urlencoded({ extended: true }));
 
 app.post("/webhook/slack", (req, res) => {
   console.log(req);
