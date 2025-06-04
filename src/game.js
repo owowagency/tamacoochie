@@ -1,12 +1,15 @@
 import relativeDate from "./utils/relativeDate.js";
 
 const config = {
-  hungerDrainRate: 4,
-  sleepDrainRate: 1,
+  hungerDrainRate: 0,
+  sleepDrainRate: 0,
   playDrainRate: 3,
   feedAmount: 1,
   sleepAmount: 1,
   playAmount: 1,
+  defaultFoodLevel: 24,
+  defaultSleepLevel: 24,
+  defaultPlayLevel: 24,
   sceneTimeOut: 10 * 1000, // 10 seconds
   speed: 1000 * 60, // 1 tick per minute
   // speed: 3600 * 24 * 1000, // 1 tick per hour in ms
@@ -15,9 +18,9 @@ const config = {
 
 export class Tamacoochie {
   constructor() {
-    this.foodLevel = 24;
-    this.sleepLevel = 24;
-    this.playLevel = 24;
+    this.foodLevel = config.defaultFoodLevel;
+    this.sleepLevel = config.defaultSleepLevel;
+    this.playLevel = config.defaultPlayLevel;
     this.isDead = false;
     this.creationTime = new Date();
     this.currentScene = "default";
@@ -44,6 +47,9 @@ export class Tamacoochie {
   }
 
   feed(playerName) {
+    if (this.foodLevel > this.defaultFoodLevel) {
+      return;
+    }
     this.foodLevel += config.feedAmount;
     this.currentPlayer = playerName;
     this.currentScene = "feeding";
@@ -54,6 +60,9 @@ export class Tamacoochie {
   }
 
   sleep(playerName) {
+    if (this.sleepLevel > this.defaultSleepLevel) {
+      return;
+    }
     this.sleepLevel += config.sleepAmount;
     this.currentPlayer = playerName;
     this.currentScene = "sleeping";
@@ -64,6 +73,9 @@ export class Tamacoochie {
   }
 
   play(playerName) {
+    if (this.playLevel > this.defaultPlayLevel) {
+      return;
+    }
     this.playLevel += config.playAmount;
     this.currentPlayer = playerName;
     this.currentScene = "playing";
