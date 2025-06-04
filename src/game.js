@@ -5,6 +5,7 @@ const config = {
   feedAmount: 1,
   sleepAmount: 1,
   playAmount: 1,
+  sceneTimeOut: 10 * 1000, // 10 seconds
   speed: 1000, // 1 tick per second
   // speed: 3600 * 24 * 1000, // 1 tick per hour in ms
   debugSpeed: 1000, // 1 tick per second
@@ -16,6 +17,9 @@ export class Tamacoochie {
     this.sleepLevel = 24;
     this.playLevel = 24;
     this.isDead = false;
+    this.currentScene = "default";
+    this.currentPlayer = null;
+    this.sceneTimer = null;
   }
 
   hungerDrain() {
@@ -36,16 +40,34 @@ export class Tamacoochie {
     }
   }
 
-  feed() {
+  feed(playerName) {
     this.foodLevel += config.feedAmount;
+    this.currentPlayer = playerName;
+    this.currentScene = "feeding";
+    this.sceneTimer = setTimeout(() => {
+      this.currentScene = "default";
+      this.currentPlayer = null;
+    }, config.sceneTimeOut);
   }
 
-  sleep() {
+  sleep(playerName) {
     this.sleepLevel += config.sleepAmount;
+    this.currentPlayer = playerName;
+    this.currentScene = "sleeping";
+    this.sceneTimer = setTimeout(() => {
+      this.currentScene = "default";
+      this.currentPlayer = null;
+    }, config.sceneTimeOut);
   }
 
-  play() {
+  play(playerName) {
     this.playLevel += config.playAmount;
+    this.currentPlayer = playerName;
+    this.currentScene = "playing";
+    this.sceneTimer = setTimeout(() => {
+      this.currentScene = "default";
+      this.currentPlayer = null;
+    }, config.sceneTimeOut);
   }
 
   tick() {
@@ -56,13 +78,18 @@ export class Tamacoochie {
     if (this.didTamagatchiDie()) {
       this.isDead = true;
       console.log("Tamagatchi died!");
+      this.currentScene = "dead";
+      this.currentPlayer = null;
     }
   }
 
   log() {
+    console.clear();
     console.log(
       `Food: ${this.foodLevel}, Sleep: ${this.sleepLevel}, Play: ${this.playLevel}`,
     );
+    console.log(`Scene: ${this.currentScene}`);
+    console.log(`Player: ${this.currentPlayer}`);
   }
 
   start() {
