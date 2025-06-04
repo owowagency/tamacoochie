@@ -81,6 +81,6 @@ export class Tamacoochie {
   }
 }
 
-export const tamacoochie = new Tamacoochie("Tamacoochie");
+export const tamacoochie = new Tamacoochie();
 
 tamacoochie.start();
