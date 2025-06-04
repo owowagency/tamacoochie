@@ -94,7 +94,7 @@ function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight, health) {
     ctx.fillRect(x + 1, y + 1, width - 2, 4);
 
     ctx.fillStyle = "#fff";
-    ctx.fillRect(x + 2, y + 2, health * 2, 2);
+    ctx.fillRect(x + 2, y + 2, Math.min(47, health * 2), 2);
   }
 }
 
