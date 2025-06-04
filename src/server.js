@@ -15,10 +15,7 @@ app.post("/webhook/slack", (req, res) => {
   const { text, user_name } = req.body;
   console.log(`Received message from ${user_name}: ${text}`);
 
-  // Get the initial command with slash (/play)
-  const command = text.split(" ")[0].slice(1);
-
-  switch (command) {
+  switch (text) {
     case "play":
       tamacoochie.play(user_name);
       break;
