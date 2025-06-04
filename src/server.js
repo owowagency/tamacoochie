@@ -6,6 +6,8 @@ tamacoochie.start();
 
 const app = express();
 
+app.use(express.json());
+
 app.post("/webhook/slack", (req, res) => {
   const { text, username } = req.body;
   console.log(`Received message from ${username}: ${text}`);
@@ -31,8 +33,6 @@ app.get("/status", (req, res) => {
   const status = tamacoochie.status();
   res.json(status);
 });
-
-app.use(express.json());
 
 app.listen(8080, () => {
   console.log(`Server listening on port 8080`);
