@@ -5,7 +5,8 @@ const config = {
   feedAmount: 1,
   sleepAmount: 1,
   playAmount: 1,
-  speed: 3600, // 1 tick per hour
+  speed: 1000, // 1 tick per second
+  // speed: 3600 * 24 * 1000, // 1 tick per hour in ms
   debugSpeed: 1000, // 1 tick per second
 };
 
