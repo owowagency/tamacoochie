@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/webhook/slack", (req, res) => {
-  console.log(req.body);
+  console.log(JSON.stringify(req, 0, 2));
 
   const { text, user_name } = req.body;
   console.log(`Received message from ${user_name}: ${text}`);
