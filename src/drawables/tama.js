@@ -1,6 +1,6 @@
-import { Tamacoochie } from "../game.js";
+import { Tamacoochie } from '../game.js';
 import { loadImage, CanvasRenderingContext2D } from 'canvas';
-import {resolve} from 'node:path';
+import { resolve } from 'node:path';
 
 const tamaDefault = await Promise.all([
   loadImage(resolve(import.meta.dirname, '../../assets/default/1.png')),
@@ -40,32 +40,100 @@ export function drawTama(coochie, elapsedTime, ctx, canvasWidth, canvasHeight) {
   }
 }
 
+/**
+ * idk
+ * @param {number} elapsedTime
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ */
 function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight) {
-  const x = 4;
-  const y = canvasHeight / 2 - TamaSize / 2;
+  {
+    const x = 4;
+    const y = canvasHeight / 2 - TamaSize / 2;
 
-  const frame = Math.floor(elapsedTime / 500) % tamaDefault.length;
-  const sprite = tamaDefault[frame];
+    const frame = Math.floor(elapsedTime / 500) % tamaDefault.length;
+    const sprite = tamaDefault[frame];
 
-  ctx.drawImage(sprite, x, y);
+    ctx.drawImage(sprite, x, y);
+  }
+
+  const text = 'Play with me';
+  const { width, actualBoundingBoxDescent } = ctx.measureText(text);
+
+  {
+    ctx.fillStyle = '#fff';
+    ctx.font = '5px "Pixel"';
+
+    const x = 4 + TamaSize + 4;
+    const y = Math.round(canvasHeight / 2 - actualBoundingBoxDescent - 1);
+
+    ctx.fillText(text, x, y);
+  }
+
+  {
+    const x = 4 + TamaSize + 4;
+    const y = Math.round(canvasHeight / 2 + 1);
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x, y, width, 6);
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x + 1, y + 1, width - 2, 4);
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x + 2, y + 2, width - 4, 2);
+  }
 }
 
+/**
+ * idk
+ * @param {number} elapsedTime
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ */
 function drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight) {
-  const x = 4;
-  const y = canvasHeight / 2 - TamaSize / 2;
+  {
+    const x = 4;
+    const y = canvasHeight / 2 - TamaSize / 2;
 
-  const frame = Math.floor(elapsedTime / 500) % tamaPlay.length;
-  const sprite = tamaPlay[frame];
+    const frame = Math.floor(elapsedTime / 500) % tamaPlay.length;
+    const sprite = tamaPlay[frame];
 
-  ctx.drawImage(sprite, x, y);
+    ctx.drawImage(sprite, x, y);
+  }
 }
 
+/**
+ * idk
+ * @param {number} elapsedTime
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} canvasWidth
+ * @param {number} canvasHeight
+ */
 function drawDead(elapsedTime, ctx, canvasWidth, canvasHeight) {
-  const x = 4;
-  const y = canvasHeight / 2 - TamaSize / 2;
+  {
+    const x = 4;
+    const y = canvasHeight / 2 - TamaSize / 2;
 
-  const frame = 0;
-  const sprite = tamaDead[frame];
+    const frame = 0;
+    const sprite = tamaDead[frame];
 
-  ctx.drawImage(sprite, x, y);
+    ctx.drawImage(sprite, x, y);
+  }
+
+  {
+    const text = 'Tamacoochie\n\nDied...';
+
+    ctx.fillStyle = '#fff';
+    ctx.font = '5px "Pixel"';
+
+    const { actualBoundingBoxDescent } = ctx.measureText(text);
+
+    const x = 4 + TamaSize + 4;
+    const y = Math.round(canvasHeight / 2 - actualBoundingBoxDescent / 2);
+
+    ctx.fillText(text, x, y);
+  }
 }
