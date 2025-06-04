@@ -5,7 +5,7 @@ import path from "node:path";
 import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
 import { createDisplay } from "flipdisc";
 import "./preview.js";
-import { setInterval } from "node:timers";
+import { drawTama } from "./drawables/tama.js";
 
 const IS_DEV = process.argv.includes("--dev");
 let tamacoochieStatus = {
@@ -55,6 +55,22 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
+// Register fonts
+registerFont(path.resolve(import.meta.dirname, "../fonts/cg-pixel-4x5.otf"), {
+  family: "Pixel",
+});
+registerFont(
+  path.resolve(import.meta.dirname, "../fonts/OpenSans-Variable.ttf"),
+  { family: "OpenSans" },
+);
+registerFont(
+  path.resolve(import.meta.dirname, "../fonts/PPNeueMontrealMono-Regular.ttf"),
+  { family: "PPNeueMontreal" },
+);
+registerFont(path.resolve(import.meta.dirname, "../fonts/Px437_ACM_VGA.ttf"), {
+  family: "Px437_ACM_VGA",
+});
+
 // Create canvas with the specified resolution
 const canvas = createCanvas(width, height);
 const ctx = canvas.getContext("2d");
@@ -70,6 +86,14 @@ ctx.textBaseline = "top";
 const ticker = new Ticker({ fps: FPS });
 
 ticker.start(({ deltaTime, elapsedTime }) => {
+  ctx.clearRect(0, 0, width, height);
+
+  // Fill the canvas with a black background
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, width, height);
+
+  drawTama(tamacoochie, elapsedTime, ctx, width, height);
+
   if (IS_DEV) {
     // Save the canvas as a PNG file
     const filename = path.join(outputDir, "frame.png");
@@ -79,8 +103,4 @@ ticker.start(({ deltaTime, elapsedTime }) => {
     const { data } = ctx.getImageData(0, 0, display.width, display.height);
     display.send([...data.values()]);
   }
-
-  // console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
-  // console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
-  // console.timeEnd("Write frame");
 });
