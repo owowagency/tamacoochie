@@ -7,6 +7,7 @@ import { createDisplay } from "flipdisc";
 import "./preview.js";
 import { Tamacoochie } from "./game.js";
 import listen from "./server.js";
+import { drawTama } from "./drawables/tama.js";
 
 const IS_DEV = process.argv.includes("--dev");
 
@@ -19,6 +20,23 @@ const outputDir = "./output";
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
+
+// Register fonts
+registerFont(
+	path.resolve(import.meta.dirname, "../fonts/cg-pixel-4x5.otf"),
+	{ family: "Pixel" },
+);
+registerFont(
+	path.resolve(import.meta.dirname, "../fonts/OpenSans-Variable.ttf"),
+	{ family: "OpenSans" },
+);
+registerFont(
+	path.resolve(import.meta.dirname, "../fonts/PPNeueMontrealMono-Regular.ttf"),
+	{ family: "PPNeueMontreal" },
+);
+registerFont(path.resolve(import.meta.dirname, "../fonts/Px437_ACM_VGA.ttf"), {
+	family: "Px437_ACM_VGA",
+});
 
 // Create canvas with the specified resolution
 const canvas = createCanvas(width, height);
@@ -39,17 +57,21 @@ listen(tamacoochie);
 const ticker = new Ticker({ fps: FPS });
 
 ticker.start(({ deltaTime, elapsedTime }) => {
-  if (IS_DEV) {
-    // Save the canvas as a PNG file
-    const filename = path.join(outputDir, "frame.png");
-    const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync(filename, buffer);
-  } else {
-    const { data } = ctx.getImageData(0, 0, display.width, display.height);
-    display.send([...data.values()]);
-  }
+	ctx.clearRect(0, 0, width, height);
 
-  // console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
-  // console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
-  // console.timeEnd("Write frame");
+	// Fill the canvas with a black background
+	ctx.fillStyle = "#000";
+	ctx.fillRect(0, 0, width, height);
+
+	drawTama(tamacoochie, elapsedTime, ctx, width, height);
+
+	if (IS_DEV) {
+		// Save the canvas as a PNG file
+		const filename = path.join(outputDir, "frame.png");
+		const buffer = canvas.toBuffer("image/png");
+		fs.writeFileSync(filename, buffer);
+	} else {
+		const { data } = ctx.getImageData(0, 0, display.width, display.height);
+		display.send([...data.values()]);
+	}
 });
