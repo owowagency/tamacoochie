@@ -5,10 +5,45 @@ import path from "node:path";
 import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
 import { createDisplay } from "flipdisc";
 import "./preview.js";
-import { Tamacoochie } from "./game.js";
-import listen from "./server.js";
+import { setInterval } from "node:timers";
 
 const IS_DEV = process.argv.includes("--dev");
+let tamacoochieStatus = {
+  foodLevel: null,
+  sleepLevel: null,
+  playLevel: null,
+  currentScene: null,
+  currentPlayer: null,
+  creationTime: null,
+  isDead: null,
+};
+
+async function updateStatus() {
+  try {
+    const response = await fetch("https://tamacoochie.owow.app/status");
+    if (!response.ok) throw new Error("Failed to fetch status");
+
+    const data = await response.json();
+
+    console.log(`Updated Status`, data);
+
+    Object.assign(tamacoochieStatus, {
+      foodLevel: data.foodLevel,
+      sleepLevel: data.sleepLevel,
+      playLevel: data.playLevel,
+      currentScene: data.currentScene,
+      currentPlayer: data.currentPlayer,
+      creationTime: data.creationTime,
+      isDead: data.isDead,
+    });
+
+    console.log("Status updated:", tamacoochieStatus);
+  } catch (error) {
+    console.error("Error updating Tamacoochie status:", error);
+  }
+}
+
+setInterval(updateStatus, 2000);
 
 // Create display
 const display = createDisplay(LAYOUT, DEVICES, OPTIONS);
