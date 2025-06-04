@@ -27,9 +27,6 @@ const TamaSize = 24;
  * @param {number} canvasHeight
  */
 export function drawTama(coochie, elapsedTime, ctx, canvasWidth, canvasHeight) {
-  drawDead(elapsedTime, ctx, canvasWidth, canvasHeight);
-  return;
-
   switch(coochie.currentScene) {
     case 'playing':
       drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight);
