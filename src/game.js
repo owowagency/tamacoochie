@@ -1,3 +1,5 @@
+import relativeDate from "./utils/relativeDate.js";
+
 const config = {
   hungerDrainRate: 4,
   sleepDrainRate: 1,
@@ -17,6 +19,7 @@ export class Tamacoochie {
     this.sleepLevel = 24;
     this.playLevel = 24;
     this.isDead = false;
+    this.creationTime = new Date();
     this.currentScene = "default";
     this.currentPlayer = null;
     this.sceneTimer = null;
@@ -71,8 +74,9 @@ export class Tamacoochie {
   }
 
   tick() {
-    this.hungerDrain();
-    this.sleepDrain();
+    // Disabling for now
+    // this.hungerDrain();
+    // this.sleepDrain();
     this.playDrain();
 
     if (this.didTamagatchiDie()) {
@@ -90,6 +94,8 @@ export class Tamacoochie {
     );
     console.log(`Scene: ${this.currentScene}`);
     console.log(`Player: ${this.currentPlayer}`);
+    const dateString = relativeDate(this.creationTime);
+    console.log(`Born: ${dateString}`);
   }
 
   start() {

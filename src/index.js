@@ -5,7 +5,6 @@ import path from "node:path";
 import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
 import { createDisplay } from "flipdisc";
 import "./preview.js";
-import app from "./server.js";
 import { Tamacoochie } from "./game.js";
 import listen from "./server.js";
 
@@ -18,7 +17,7 @@ const { width, height } = display;
 // Create output directory if it doesn't exist
 const outputDir = "./output";
 if (!fs.existsSync(outputDir)) {
-	fs.mkdirSync(outputDir, { recursive: true });
+  fs.mkdirSync(outputDir, { recursive: true });
 }
 
 // Create canvas with the specified resolution
@@ -40,17 +39,17 @@ listen(tamacoochie);
 const ticker = new Ticker({ fps: FPS });
 
 ticker.start(({ deltaTime, elapsedTime }) => {
-	if (IS_DEV) {
-		// Save the canvas as a PNG file
-		const filename = path.join(outputDir, "frame.png");
-		const buffer = canvas.toBuffer("image/png");
-		fs.writeFileSync(filename, buffer);
-	} else {
-		const { data } = ctx.getImageData(0, 0, display.width, display.height);
-		display.send([...data.values()]);
-	}
+  if (IS_DEV) {
+    // Save the canvas as a PNG file
+    const filename = path.join(outputDir, "frame.png");
+    const buffer = canvas.toBuffer("image/png");
+    fs.writeFileSync(filename, buffer);
+  } else {
+    const { data } = ctx.getImageData(0, 0, display.width, display.height);
+    display.send([...data.values()]);
+  }
 
-	// console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
-	// console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
-	// console.timeEnd("Write frame");
+  // console.log(`Eslapsed time: ${(elapsedTime / 1000).toFixed(2)}s`);
+  // console.log(`Delta time: ${deltaTime.toFixed(2)}ms`);
+  // console.timeEnd("Write frame");
 });
