@@ -1,4 +1,4 @@
-# Node Flipdots
+# Tamacoochie
 
 A Node.js project for controlling and simulating flipdot displays, perfect for educational purposes and creative coding exercises.
 
@@ -75,7 +75,7 @@ ticker.start(({ deltaTime, elapsedTime }) => {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, width, height);
-    
+
     // Draw something (e.g., moving circle)
     const x = Math.floor(((Math.sin(elapsedTime / 1000) + 1) / 2) * width);
     ctx.fillStyle = "#fff";
@@ -114,4 +114,4 @@ Some ideas to extend this project:
 ## Dependencies
 
 - [`canvas`](https://www.npmjs.com/package/canvas) - For creating and manipulating graphics
-- [`nodemon`](https://www.npmjs.com/package/nodemon) - For development auto-reloading 
+- [`nodemon`](https://www.npmjs.com/package/nodemon) - For development auto-reloading
