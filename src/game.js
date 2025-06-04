@@ -112,4 +112,16 @@ export class Tamacoochie {
       return true;
     } else return false;
   }
+
+  status() {
+    return {
+      foodLevel: this.foodLevel,
+      sleepLevel: this.sleepLevel,
+      playLevel: this.playLevel,
+      currentScene: this.currentScene,
+      currentPlayer: this.currentPlayer,
+      creationTime: this.creationTime,
+      isDead: this.isDead,
+    };
+  }
 }

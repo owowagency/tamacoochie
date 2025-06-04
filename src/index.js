@@ -31,10 +31,6 @@ ctx.font = "18px monospace";
 // Align text precisely to pixel boundaries
 ctx.textBaseline = "top";
 
-const tamacoochie = new Tamacoochie();
-tamacoochie.start();
-listen(tamacoochie);
-
 // Initialize the ticker at x frames per second
 const ticker = new Ticker({ fps: FPS });
 

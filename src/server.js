@@ -1,31 +1,36 @@
 import express from "express";
+import { Tamacoochie } from "./game.js";
 
-const listen = function (tamacoochieInstance) {
-  const app = express();
+const tamacoochie = new Tamacoochie();
+tamacoochie.start();
 
-  app.post("/webhook/slack", (req, res) => {
-    const { text, username } = req.body;
-    console.log(`Received message from ${username}: ${text}`);
+const app = express();
 
-    // Get the initial command with slash (/play)
-    const command = text.split(" ")[0].slice(1);
+app.post("/webhook/slack", (req, res) => {
+  const { text, username } = req.body;
+  console.log(`Received message from ${username}: ${text}`);
 
-    switch (command) {
-      case "play":
-        tamacoochieInstance.play(username);
-        break;
-      default:
-        // Handle unknown command
-        break;
-    }
-    res.status(200).send("OK");
-  });
+  // Get the initial command with slash (/play)
+  const command = text.split(" ")[0].slice(1);
 
-  app.use(express.json());
+  switch (command) {
+    case "play":
+      tamacoochie.play(username);
+      break;
+    default:
+      // Handle unknown command
+      break;
+  }
+  res.status(200).send("OK");
+});
 
-  app.listen(80, () => {
-    console.log(`Server listening on port 80`);
-  });
-};
+app.get("/status", (req, res) => {
+  const status = tamacoochie.status();
+  res.json(status);
+});
 
-export default listen;
+app.use(express.json());
+
+app.listen(80, () => {
+  console.log(`Server listening on port 80`);
+});
