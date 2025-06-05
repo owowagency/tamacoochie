@@ -6,7 +6,7 @@ const config = {
   playDrainRate: 2,
   feedAmount: 1,
   sleepAmount: 1,
-  playAmount: 8,
+  playAmount: 4,
   defaultFoodLevel: 24,
   defaultSleepLevel: 24,
   defaultPlayLevel: 24,
