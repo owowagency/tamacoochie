@@ -11,7 +11,7 @@ const config = {
   defaultSleepLevel: 24,
   defaultPlayLevel: 24,
   sceneTimeOut: 10 * 1000, // 10 seconds
-  speed: 3600 * 24 * 1000, // 1 tick per hour in ms
+  speed: 3600 * 1000, // 1 tick per hour in ms
   debugSpeed: 1000, // 1 tick per second
 };
 
