@@ -2,10 +2,10 @@ import { Ticker } from "./ticker.js";
 import { createCanvas, registerFont } from "canvas";
 import fs from "node:fs";
 import path from "node:path";
-import { FPS, LAYOUT, DEVICES, OPTIONS } from "./settings.js";
-import { createDisplay } from "flipdisc";
+import { FPS, LAYOUT } from "./settings.js";
 import "./preview.js";
 import { drawTama } from "./drawables/tama.js";
+import { Display } from "@owowagency/flipdot-emu";
 
 const IS_DEV = process.argv.includes("--dev");
 let tamacoochieStatus = {
@@ -46,7 +46,16 @@ async function updateStatus() {
 setInterval(updateStatus, 2000);
 
 // Create display
-const display = createDisplay(LAYOUT, DEVICES, OPTIONS);
+const display = new Display({
+	layout: LAYOUT,
+	panelWidth: 28,
+	isMirrored: true,
+	transport: {
+		type: 'serial',
+		path: '/dev/ttyACM0',
+		baudRate: 57600
+	}
+});
 const { width, height } = display;
 
 // Create output directory if it doesn't exist
@@ -100,7 +109,10 @@ ticker.start(({ deltaTime, elapsedTime }) => {
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync(filename, buffer);
   } else {
-    const { data } = ctx.getImageData(0, 0, display.width, display.height);
-    display.send([...data.values()]);
+    const data = ctx.getImageData(0, 0, display.width, display.height);
+    display.setImageData(data);
+    if (display.isDirty()) {
+      display.flush();
+    }
   }
 });
