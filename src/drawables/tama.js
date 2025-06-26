@@ -61,7 +61,7 @@ export function drawTama(coochie, elapsedTime, ctx, canvasWidth, canvasHeight) {
  */
 function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight, health) {
   {
-    const x = 4;
+    const x = 2;
     const y = canvasHeight / 2 - TamaSize / 2;
 
     const frame = Math.floor(elapsedTime / 500) % tamaDefault.length;
@@ -77,14 +77,14 @@ function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight, health) {
     ctx.fillStyle = "#fff";
     ctx.font = '5px "Pixel"';
 
-    const x = 4 + TamaSize + 4;
+    const x = 2 + TamaSize + 4;
     const y = Math.round(canvasHeight / 2 - actualBoundingBoxDescent - 1);
 
     ctx.fillText(text, x, y);
   }
 
   {
-    const x = 4 + TamaSize + 4;
+    const x = 2 + TamaSize + 4;
     const y = Math.round(canvasHeight / 2 + 1);
 
     ctx.fillStyle = "#fff";
@@ -107,7 +107,7 @@ function drawDefault(elapsedTime, ctx, canvasWidth, canvasHeight, health) {
  */
 function drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight, name) {
   {
-    const x = 4;
+    const x = 2;
     const y = canvasHeight / 2 - TamaSize / 2;
 
     const frame = Math.floor(elapsedTime / 500) % tamaPlay.length;
@@ -124,7 +124,7 @@ function drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight, name) {
 
     const { actualBoundingBoxDescent } = ctx.measureText(text);
 
-    const x = 4 + TamaSize + 4;
+    const x = 2 + TamaSize + 4;
     const y = Math.round(canvasHeight / 2 - actualBoundingBoxDescent / 2);
 
     ctx.fillText(text, x, y);
@@ -140,7 +140,7 @@ function drawPlaying(elapsedTime, ctx, canvasWidth, canvasHeight, name) {
  */
 function drawDead(elapsedTime, ctx, canvasWidth, canvasHeight) {
   {
-    const x = 4;
+    const x = 2;
     const y = canvasHeight / 2 - TamaSize / 2;
 
     const frame = 0;
@@ -157,7 +157,7 @@ function drawDead(elapsedTime, ctx, canvasWidth, canvasHeight) {
 
     const { actualBoundingBoxDescent } = ctx.measureText(text);
 
-    const x = 4 + TamaSize + 4;
+    const x = 2 + TamaSize + 4;
     const y = Math.round(canvasHeight / 2 - actualBoundingBoxDescent / 2);
 
     ctx.fillText(text, x, y);
